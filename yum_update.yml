@@ -1,0 +1,6 @@
+- name: Actualizar sistemasHello World Sample
+  hosts: all
+  tasks:
+    - name: actualizar paquetes
+      debug:
+        shell: yum update -y
