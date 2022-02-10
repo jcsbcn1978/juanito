@@ -4,6 +4,8 @@
   become: true
   become_user: root
   tasks:
+    - name: cambio de usuario a root
+      commanda: sudo su - root
     # Upgrade RHEL family OS packages
     - name: Upgrade RHEL Family OS packages
       yum:
