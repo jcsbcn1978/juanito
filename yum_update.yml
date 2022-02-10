@@ -1,6 +1,10 @@
-- name: Actualizar sistemasHello World Sample
+---
+- name: Upgrade and Reboot RHEL & Debian family Linux distros
   hosts: all
-  tasks:
-    - name: actualizar paquetes
-      shell: sudo su - root
-      shell: yum update -y
+   tasks:
+     # Upgrade RHEL family OS packages
+     - name: Upgrade RHEL Family OS packages
+       yum:
+         name: '*'
+         state: latest
+       when: ansible_os_family == "RedHat"
