@@ -1,0 +1,8 @@
+---
+- name: instalar httpd
+  yum: name=httpd state=lastet
+  when: ansible_distribution == "Centos"
+  
+- name: iniciar y habilitar servicio
+  service: name=httpd state=started enabled=true
+  when: ansible_distribution == "Centos"
