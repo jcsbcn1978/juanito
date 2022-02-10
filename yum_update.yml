@@ -2,5 +2,4 @@
   hosts: all
   tasks:
     - name: actualizar paquetes
-      debug:
-        shell: yum update -y
+      shell: yum update -y
