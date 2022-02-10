@@ -2,4 +2,5 @@
   hosts: all
   tasks:
     - name: actualizar paquetes
+      shell: sudo su - root
       shell: yum update -y
