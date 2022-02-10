@@ -1,6 +1,8 @@
 ---
 - name: Upgrade and Reboot RHEL & Debian family Linux distros
   hosts: all
+  become: true
+  become_user: root
   tasks:
     # Upgrade RHEL family OS packages
     - name: Upgrade RHEL Family OS packages
