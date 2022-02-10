@@ -1,0 +1,6 @@
+---
+- name: reiniciar servicio sshd
+  hosts: all
+  handlers:
+    - name: restart_ssd
+      service: name=sshd state=restart
