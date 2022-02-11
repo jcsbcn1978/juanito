@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+        - name: Revisamos si Tomcat esta como servicio 
+          stat: path=/etc/init.d/tomcat
+          register: file_exists
