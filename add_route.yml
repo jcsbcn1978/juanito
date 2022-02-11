@@ -1,0 +1,28 @@
+- hosts: all
+  tasks:
+    - name: Crea el fichero, en caso de no existir
+      file:
+        path: /etc/sysconfig/network-scripts/route-eth0
+        state: touch
+    - name: Copia de seguridad del fichero de rutas eth0
+      shell: cp /etc/sysconfig/network-scripts/route-eth0 /etc/sysconfig/network-scripts/backup/route-eth0.backup.$(date +%Y%m%d)
+      ignore_errors: yes
+    - name: Copia de seguridad del fichero de rutas 
+      shell: cp /etc/sysconfig/network-scripts/route-eth0 /etc/sysconfig/network-scripts/backup/route-eth0.backup.$(date +%Y%m%d)
+      ignore_errors: yes
+    - name: Agrega linea
+      blockinfile:
+        path: /etc/sysconfig/network-scripts/route-eth0
+        block: |
+          {{ item }}
+        marker: "# {mark} Add routes 20190821 {{ item }}"
+      with_items:
+        - 172.16.0.0/12 via 10.1.1.100
+        - 192.168.0.0/16 via 10.1.1.100
+        - 10.30.0.0/16  via 10.1.1.100
+    - name: Reinicia la red
+      shell: service network restart
+    - name: Muestra las rutas
+      shell: netstat -arn
+      register: out
+    - debug: var=out.stdout_lines
