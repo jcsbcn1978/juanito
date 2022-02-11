@@ -1,0 +1,8 @@
+
+- hosts: all
+
+  vars: 
+    Fichero_Final: /etc/init.d/tomcat
+    Fichero_Origen: /home/Repositorios/WorkersValija/tomcat
+    Ruta_Destino: /etc/init.d/
+    Permisos: 0755
