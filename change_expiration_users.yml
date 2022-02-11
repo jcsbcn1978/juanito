@@ -1,0 +1,16 @@
+- hosts: all
+  tasks:
+    - name: copia de seguridad del fichero /etc/shadow
+      shell: cp /etc/shadow /etc/shadow$(date +%F)
+    - name: Cambia la expiracion de los usuarios admbkp
+      shell: sed  -s -i '/admbk/s/:99999:/:180:/g' /etc/shadow
+    - name: Cambia la expiracion de los usuarios mqmmqm
+      shell: sed  -s -i '/mqmmqm/s/:99999:/:180:/g' /etc/shadow
+    - name: Cambia la expiracion de los usuarios oper
+      shell: sed  -s -i '/oper/s/:99999:/:180:/g' /etc/shadow
+    - name: Cambia la expiracion de los usuarios tecbas i tecsis
+      shell: sed  -s -i '/tec/s/:99999:/:180:/g' /etc/shadow
+    - name: Cambia la expiracion de los usuarios tsbas y tsbsis
+      shell: sed  -s -i '/tsb/s/:99999:/:180:/g' /etc/shadow
+    - name: Cambia la expiracion de los usuarios tspsis
+      shell: sed  -s -i '/tsp/s/:99999:/:180:/g' /etc/shadow
