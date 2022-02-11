@@ -1,0 +1,6 @@
+####yum_update.yml
+- name: Yum update 
+      shell: yum update --exclude=openoffice* --exclude=libreoffice*
+      when: ansible_distribution == "CentOS"
+      register: out
+    - debug: var=out.stdout_lines
