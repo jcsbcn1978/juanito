@@ -1,0 +1,53 @@
+---
+- hosts: 'all'
+  strategy: 'free'
+  tasks:
+    - name: "Import Redhat role"
+      block:
+        - name: "Import Redhat xinetd role"
+          include_role:
+            name: "xinetd_install"
+        - name: "Import Redhat xcom role"
+          include_role:
+            name: "xcom_install"
+        - name: "Import Redhat xcom monit role"
+          include_role:
+            name: "call_monit_lb_le"
+          vars:
+            at_host: "{{ ansible_limit | default('WARNING.if.this.is.empty.it.will.execute.over.all') }}"
+            call_monit_lble_name: "LE_XCOM"
+          when: "ansible_os_family == 'RedHat' and xcom_run_option == 'install'"
+      become: 'true'
+      when: "ansible_os_family == 'RedHat'"
+
+    - name: "xcomvault vars"
+      include_vars: 'vault.yml'
+      no_log: 'true'
+
+    - name: "Windows role install"
+      block:
+        - name: 'Import windows role for install'
+          include_role:
+            name: "wrapper"
+          vars:
+            wrapper_product_sha: "56523207162df9b88747a0fc3cfb294a4a60afea"
+            wrapper_product_params_survey: "eliminalogs = SI;;CMD1 = install;;RESTART = NO;;unitinstall = C\
+            ;;passxcoxco01 = {{ passxcoxco }};;passxcoxco02 = {{ passxcoxco }};;\
+            passxcocon01 = {{ passxcocon }};;SSL_METHOD = tlsv1"
+        - name: "Import Windows xcom monit role"
+          include_role:
+            name: "call_monit_lb_le"
+          vars:
+            at_host: "{{ ansible_limit | default('WARNING.if.this.is.empty.it.will.execute.over.all') }}"
+            call_monit_lble_name: "LE_XCOM"
+      when: "ansible_os_family == 'Windows' and xcom_run_option == 'install'"
+
+    - name: "Windows role uninstall"
+      block:
+        - name: 'Import windows role for uninstall'
+          include_role:
+            name: "wrapper"
+          vars:
+            wrapper_product_sha: "56523207162df9b88747a0fc3cfb294a4a60afea"
+            wrapper_product_params_survey: "eliminalogs = SI;;CMD1 = uninstall;;RESTART = NO;;unitinstall = C"
+      when: "ansible_os_family == 'Windows' and xcom_run_option == 'uninstall'"

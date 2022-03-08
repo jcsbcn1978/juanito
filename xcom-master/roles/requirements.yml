@@ -1,0 +1,20 @@
+# XINETD_INSTALL
+- src: 'git://gitsrv.svb.lacaixa.es/9387HE/PLAYIT_TOWER/roles/linux/xinetd_install.git'
+  name: 'xinetd_install'
+  scm: "git"
+  version: "master"
+# XCOM_INSTALL
+- src: 'git://gitsrv.svb.lacaixa.es/9387HE/PLAYIT_TOWER/roles/linux/xcom_install.git'
+  name: 'xcom_install'
+  scm: 'git'
+  version: 'master'
+# WRAPPER
+- src: "git://gitsrv.svb.lacaixa.es/9387HE/PLAYIT_TOWER/roles/windows/wrapper.git"
+  name: 'wrapper'
+  scm: "git"
+  version: "master"
+# MONITORING
+- src: "git://gitsrv.svb.lacaixa.es/9387HE/PLAYIT_TOWER/roles/linux/call_monit_lb_le.git"
+  name: 'call_monit_lb_le'
+  scm: "git"
+  version: "master"
