@@ -1,0 +1,42 @@
+node { 
+    def remote = [:]
+    remote.name = 'SVTAN0070'
+    remote.host = '192.168.44.176'
+    remote.port = 22
+    remote.allowAnyHosts = true
+    //Le deecimos a jenkins, que pille el usuario que tiene creado, para no mostrarlo
+    withCredentials([usernamePassword(credentialsId: 'jenkins-root', passwordVariable: 'Password', usernameVariable: 'Username')]) {
+        remote.user = "${Username}"
+        remote.password = "${Password}"
+        }
+ 
+     parameters {
+        string(name: 'app', defaultValue: '', description: 'Aplicación')
+        }
+ 
+    stage('Para la aplicación') {
+           
+         sshCommand remote: remote, failOnError: true, command:  "curl -u monitoring:T0mc4tScr1pts http://localhost:8080/manager/text/stop?path=/${params.app} -k"
+        }
+
+    stage('Espera 30 segundos para la parada') {
+           
+         sshCommand remote: remote, failOnError: true, command:  "sleep 30"
+        }
+
+    stage('Repliega la aplicación') {
+           
+         sshCommand remote: remote, failOnError: true, command:  "curl -u monitoring:T0mc4tScr1pts http://localhost:8080/manager/text/undeploy?path=/${params.app} -k"
+        }
+        
+    stage('Manda email'){
+        
+          emailext attachLog: true,  
+				body: """<p>Trabajo'${env.JOB_NAME} completado':</p>
+                    <p>Revise la salida de la consola en "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p> o el fichero adjunto""",
+				from: 'jenkins@serviciosbancarios.com', 
+				subject: """Jenkins:Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'" completado""", 
+				to: 'bgitnow.backoffice.filiales@itnow.es'
+        }
+ 
+}
